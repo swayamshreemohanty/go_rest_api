@@ -2,6 +2,7 @@ package routes
 
 import (
 	"go_rest_api/models"
+	"go_rest_api/utils"
 	"net/http"
 	"strconv"
 
@@ -51,12 +52,12 @@ func createEvent(c *gin.Context)  {
 	}
 
 	// Get the userId from the context
-	if userId, exists := c.Get("userId"); exists {
-		event.UserId = userId.(int64)
-	}else{
+	userId, exists := c.Get("userId")
+	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 		return
 	}
+	event.UserId = userId.(int64)
 
 	// Save the event to the database
 	event.Save()
@@ -71,12 +72,17 @@ func updateEvent(c *gin.Context)  {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
+	
 	//Check the event exists
-	_, err = models.GetEvent(id)
-
+	event, err := models.GetEvent(id)
 	if err!=nil{
 		c.JSON(http.StatusNotFound, gin.H{"error": "Event not found"})
+		return
+	}
+	
+	//Check if the user is the owner of the event
+	if ok:=utils.CheckUserOwnership(c, event.UserId); !ok{
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Not authorized to update this event"}) 
 		return
 	}
 
@@ -114,12 +120,19 @@ func deleteEvent(c *gin.Context)  {
 
 	//Check the event exists
 	event, err := models.GetEvent(id)
-
 	if err!=nil{
 		c.JSON(http.StatusNotFound, gin.H{"error": "Event not found"})
 		return
 	}
 
+
+	//Check if the user is the owner of the event
+	if ok:=utils.CheckUserOwnership(c, event.UserId); !ok{
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Not authorized to delete this event"})
+		return
+	}
+
+	// Delete the event
 	err = event.Delete()
 
 	if err!=nil{
