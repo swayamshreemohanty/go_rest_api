@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"go_rest_api/db"
 	"go_rest_api/utils"
 )
@@ -44,6 +45,38 @@ func (u *User) Save() error {
 
 	// Set the ID field of the struct
 	u.ID = id
+
+	return nil
+}
+
+//Login the user
+func (u *User) Login() error {
+	query := `SELECT id, email, password FROM users WHERE email = ?`
+
+	stmt, err := db.DBClient.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query
+	row := stmt.QueryRow(u.Email)
+
+	var hashedPassword string
+
+	err = row.Scan(&u.ID, &u.Email, &hashedPassword)
+
+	if err != nil {
+		return err
+	}
+
+	isPasswordValid := utils.CompareHashAndPassword(hashedPassword,u.Password)
+
+	if !isPasswordValid {
+		return errors.New("invalid password")
+	}
 
 	return nil
 }

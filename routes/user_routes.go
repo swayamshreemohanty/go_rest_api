@@ -25,3 +25,22 @@ func signup(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, user)
 }
+
+// login
+func login(c *gin.Context) {
+	var user models.User
+
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = user.Login()
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
