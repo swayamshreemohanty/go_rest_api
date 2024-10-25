@@ -50,8 +50,8 @@ func (u *User) Save() error {
 }
 
 //Login the user
-func (u *User) Login() error {
-	query := `SELECT id, email, password FROM users WHERE email = ?`
+func (u *User) ValidateCredentials() error {
+	query := `SELECT id, password FROM users WHERE email = ?`
 
 	stmt, err := db.DBClient.Prepare(query)
 	if err != nil {
@@ -66,10 +66,10 @@ func (u *User) Login() error {
 
 	var hashedPassword string
 
-	err = row.Scan(&u.ID, &u.Email, &hashedPassword)
+	err = row.Scan(&u.ID, &hashedPassword)
 
 	if err != nil {
-		return err
+		return errors.New("invalid email")
 	}
 
 	isPasswordValid := utils.CompareHashAndPassword(hashedPassword,u.Password)

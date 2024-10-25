@@ -2,6 +2,7 @@ package routes
 
 import (
 	"go_rest_api/models"
+	"go_rest_api/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -36,11 +37,18 @@ func login(c *gin.Context) {
 		return
 	}
 
-	err = user.Login()
+	err = user.ValidateCredentials()
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	token, err := utils.GenerateToken(user.Email, user.ID)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Login successful", "token": token})
 }
