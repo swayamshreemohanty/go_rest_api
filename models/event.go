@@ -12,7 +12,7 @@ type Event struct {
 	Description string `binding:"required" json:"description"`
 	Location    string `binding:"required" json:"location"`
 	DateTime    int64  `binding:"required" json:"dateTime"` // Store epoch time as int64
-	UserId      int    `binding:"required" json:"userId"`
+	UserId      int64  `json:"userId"`
 }
 
 

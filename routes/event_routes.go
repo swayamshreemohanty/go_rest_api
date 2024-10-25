@@ -39,18 +39,26 @@ func getEvents(c *gin.Context)  {
 }
 
 func createEvent(c *gin.Context)  {
-
 	// initialize an empty event
 	var event models.Event
 
 	// Bind the event from the request
-	err:=c.ShouldBindJSON(&event)
+	err := c.ShouldBindJSON(&event)
 
 	if err!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	// Get the userId from the context
+	if userId, exists := c.Get("userId"); exists {
+		event.UserId = userId.(int64)
+	}else{
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+		return
+	}
+
+	// Save the event to the database
 	event.Save()
 
 	c.JSON(http.StatusCreated, event)

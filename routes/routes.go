@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"go_rest_api/middlewares"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -9,9 +11,16 @@ func RegisterRoutes(server *gin.Engine) {
 	// Event routes
 	server.GET("/events", getEvents)
 	server.GET("/events/:id", getEvent)
-	server.POST("/events", createEvent)
-	server.PUT("/events/:id", updateEvent)
-	server.DELETE("/events/:id", deleteEvent)
+	
+	// Group routes that require authentication
+	authenticated := server.Group("/")
+
+	// Use the Authenticate middleware for all routes in the authenticated group
+	authenticated.Use(middlewares.Authenticate)
+
+	authenticated.POST("/events", createEvent)
+	authenticated.PUT("/events/:id", updateEvent)
+	authenticated.DELETE("/events/:id", deleteEvent)
 
 	// User routes
 	server.POST("/signup", signup)
