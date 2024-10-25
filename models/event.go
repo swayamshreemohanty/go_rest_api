@@ -48,30 +48,28 @@ func (e *Event) Save() error {
 	return nil
 }
 
-func GetAllEvents() ([]Event,error){
-	
-	rows, err := db.DBClient.Query("SELECT * FROM events")
-
-	if err != nil {	
+func GetAllEvents() ([]Event, error) {
+	query := "SELECT * FROM events"
+	stmt, err := db.DBClient.Prepare(query)
+	if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
-	// Close the rows after the function ends
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
 	defer rows.Close()
 
 	events := []Event{}
 
-	// Iterate over the rows
 	for rows.Next() {
 		var e Event
-
-		// Scan the row into the struct
 		err := rows.Scan(&e.ID, &e.Name, &e.Description, &e.Location, &e.DateTime, &e.UserId)
 		if err != nil {
 			return nil, err
 		}
-
-		// Append the struct to the slice
 		events = append(events, e)
 	}
 
@@ -92,6 +90,47 @@ func GetEvent(id int64) (*Event, error) {
 	}
 
 	return &e, nil
+}
+
+func (e *Event) Update() error {
+	
+	query := `
+			UPDATE events 
+			SET 
+			name=?, description=?, location=?, dateTime=?, userId=? 
+			WHERE id=?
+			`
+
+	stmt, err := db.DBClient.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query
+	_, err = stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserId, e.ID)
+	
+	return err
+}
+
+func (e *Event) Delete() error {
+	
+	query := `DELETE FROM events WHERE id=?`
+
+	stmt, err := db.DBClient.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query
+	_, err = stmt.Exec(e.ID)
+	
+	return err
 }
 
 // Helper function to convert epoch to time.Time
