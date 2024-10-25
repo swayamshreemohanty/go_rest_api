@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "7762bf88-b3ff-4de5-bc96-d21fef50039e",
+		"name": "GoRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23683986"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "get all events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/events/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete event by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN3YXlhbUBnbWFpbC5jb20iLCJleHAiOjE3Mjk4ODg4NjYsInVzZXJfaWQiOjF9.V4Km4x949y4WZs7oGAqQ9MwOg5kw1YWlRVzqKGHBLDw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/events/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN3YXlhbUBnbWFpbC5jb20iLCJleHAiOjE3Mjk4ODg4NjYsInVzZXJfaWQiOjF9.V4Km4x949y4WZs7oGAqQ9MwOg5kw1YWlRVzqKGHBLDw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Marriage bala\",\n    \"description\": \"Swayamshree Marriage\",\n    \"location\": \"Bhubaneswar\",\n    \"dateTime\": 1729431205\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/events/11",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imlzc3VAZ21haWwuY29tIiwiZXhwIjoxNzI5ODkxMDcyLCJ1c2VyX2lkIjoxfQ.MkCgpNT4NNfIFgXkvOSmnxlXrLk-YHnEs1urjlL9FjA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel registration for event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imlzc3VAZ21haWwuY29tIiwiZXhwIjoxNzI5ODkxMDcyLCJ1c2VyX2lkIjoxfQ.MkCgpNT4NNfIFgXkvOSmnxlXrLk-YHnEs1urjlL9FjA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imlzc3VAZ21haWwuY29tIiwiZXhwIjoxNzI5ODkxMDcyLCJ1c2VyX2lkIjoxfQ.MkCgpNT4NNfIFgXkvOSmnxlXrLk-YHnEs1urjlL9FjA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Marriage ceremony\",\n    \"description\": \"Swayamshree Issu Marriage\",\n    \"location\": \"Bhubaneswar\",\n    \"dateTime\": 1729431205\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"swayamshree@gmail.com\",\n    \"password\": \"Abcd@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"swayamshree@gmail.com\",\n    \"password\": \"Abcd@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
