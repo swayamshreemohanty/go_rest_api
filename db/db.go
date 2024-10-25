@@ -58,9 +58,28 @@ func createUserTable(){
 	}
 }
 
+// Registration table
+func createRegistrationTable(){
+	createRegistrationTable := 
+	`CREATE TABLE IF NOT EXISTS registrations(
+	 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+		userId INTEGER NOT NULL,
+		eventId INTEGER NOT NULL,
+		FOREIGN KEY (userId) REFERENCES users(id),
+		FOREIGN KEY (eventId) REFERENCES events(id)
+	 )`
+
+	_, err:= DBClient.Exec(createRegistrationTable)
+
+	if err!=nil{
+		panic("Could not create registrations table")
+	}
+}
+
 
 
 func createTables() {
 	createUserTable()
 	createEventTable()
+	createRegistrationTable()
 }

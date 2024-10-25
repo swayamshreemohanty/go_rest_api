@@ -133,6 +133,40 @@ func (e *Event) Delete() error {
 	return err
 }
 
+func (e *Event) RegisterForEvent(userId int64) error {
+	query := `INSERT INTO registrations (userId, eventId) VALUES (?, ?)`
+
+	stmt, err := db.DBClient.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query
+	_, err = stmt.Exec(userId, e.ID)
+	
+	return err
+}
+
+func (e *Event) UnregisterFromEvent(userId int64) error {
+	query := `DELETE FROM registrations WHERE userId=? AND eventId=?`
+
+	stmt, err := db.DBClient.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query
+	_, err = stmt.Exec(userId, e.ID)
+	
+	return err
+}
+
 // Helper function to convert epoch to time.Time
 func EpochToTime(epoch int64) time.Time {
 	return time.Unix(epoch, 0)

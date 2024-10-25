@@ -18,9 +18,14 @@ func RegisterRoutes(server *gin.Engine) {
 	// Use the Authenticate middleware for all routes in the authenticated group
 	authenticated.Use(middlewares.Authenticate)
 
+	//Event handlers
 	authenticated.POST("/events", createEvent)
 	authenticated.PUT("/events/:id", updateEvent)
 	authenticated.DELETE("/events/:id", deleteEvent)
+
+	//Event handlers
+	authenticated.POST("/events/:id/register", registerForEvent)
+	authenticated.DELETE("/events/:id/register", cancelRegistrationForEvent) 
 
 	// User routes
 	server.POST("/signup", signup)
