@@ -19,11 +19,11 @@ func InitDB(){
 	DBClient.SetMaxOpenConns(10);
 	DBClient.SetConnMaxIdleTime(5);
 
-	createTable()
+	createTables()
 }
 
-func createTable(){
-
+// Create the events table
+func createEventTable(){
 	createEventsTable := 
 	`CREATE TABLE IF NOT EXISTS events(
 	 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +31,8 @@ func createTable(){
 		description TEXT NOT NULL,
 		location TEXT NOT NULL,
 		dateTime INTEGER NOT NULL,
-		userId INTEGER NOT NULL
+		userId INTEGER NOT NULL,
+		FOREIGN KEY (userId) REFERENCES users(id)
 	 )`
 
 	_, err:= DBClient.Exec(createEventsTable)
@@ -39,4 +40,27 @@ func createTable(){
 	if err!=nil{
 		panic("Could not create events table")
 	}
+}
+
+// Create the users table
+func createUserTable(){
+	createUsersTable := 
+	`CREATE TABLE IF NOT EXISTS users(
+	 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+		email TEXT NOT NULL UNIQUE,
+		password TEXT NOT NULL
+	 )`
+
+	_, err:= DBClient.Exec(createUsersTable)
+
+	if err!=nil{
+		panic("Could not create users table")
+	}
+}
+
+
+
+func createTables() {
+	createUserTable()
+	createEventTable()
 }
